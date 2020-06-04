@@ -23,6 +23,39 @@ class SLL {
         return true;
     }
 
+    //iterate the linked list and print the value of every node
+    display(){
+        let runner=this.head;
+        while(runner != null)
+        {
+            console.log(runner.data);
+            runner=runner.next;
+        }
+
+    }
+
+    //if data is contained within the current list, remove it.
+    //consider edge cases of head node, last node, and middle nodes
+    delete(data) {
+        if(this.isEmpty())
+            return;
+        if(this.head.data==data){
+            this.head=this.head.next;
+            return;
+        }
+        let runnerfront=this.head.next;
+        let runnerback=this.head;
+        while(runnerfront !=null){
+            if(runnerfront.data==data){
+                runnerback.next = runnerfront.next;
+                return;
+            }
+            runnerfront = runnerfront.next;
+            runnerback=runnerback.next;
+        }
+
+    }
+
     addToBack(node){
         // create a runner at the head
         let runner = this.head;
@@ -203,3 +236,8 @@ console.log(mySLL.average());
 
 var newSLL = new SLL();
 console.log(newSLL.average());
+
+//Check if display is working
+mySLL.display();
+mySLL.delete(1);
+mySLL.display();
