@@ -1,8 +1,102 @@
-// Daniel, Dathan, Kevin
 
 class SLL {
     constructor() {
         this.head = null;
+    }
+
+    reverse(){
+        var current = this.head;
+        var array = [];
+        while(current != null){
+            array.push(current);
+            current = current.next;
+        }
+        for(var i = array.length-1; i >= 1; i--){
+            array[i].next = array[i-1];
+        }
+        array[0].next = null;
+        this.head = array[array.length-1];
+    }
+
+    reverseOnce(){
+        var current = this.head;
+        var prev = null;
+        var next = current.next;
+        while(next != null){
+            current.next = prev;
+            prev = current;
+            current = next;
+            next = next.next;
+        }
+        this.head = current;
+    }
+    // reverse the order of a singly linked list.
+
+    // if the order is head -> 1 -> 2 -> 3 -> null
+    // the result will be head -> 3 -> 2 -> 1 -> null
+
+    // first solve this any way that you can, possibly using
+    // a different data structure as storage
+
+    // once you have a working solution, how could you refactor
+    // your code to only traverse the list once?
+
+
+    nthToLast(n){
+        var current = this.head;
+        var array = [];
+        while(current != null){
+            array.push(current);
+            current = current.next;
+        }
+        return array[array.length-1-n];
+    }
+    //traverse sll till end,
+    //set a pointer =length-1-n
+    //return pointer val
+
+    // return the nth to the last node. assume you do not have a count() method
+    // first get a working solution
+
+    // assume n is within range of the list
+
+    // once you solve it, how could you refactor your code to only
+    // traverse the list one time?
+
+
+
+
+
+    //iterate the linked list and print the value of every node
+    display(){
+        var runner = this.head;
+        while (runner !== null) {
+            console.log(runner.data);
+            runner = runner.next;
+        }
+    }
+
+    //if data is contained within the current list, remove it.
+    //consider edge cases of head node, last node, and middle nodes
+    delete(data) {
+        var runner = this.head;
+        var prev = null;
+
+        if (runner !== null && runner.data == data) {
+            this.head = runner.next;
+            return;
+        }
+
+        while (runner && runner.data !== data) {
+            prev = runner;
+            runner = runner.next;
+        }
+
+        if (runner === null) {
+            return;
+        }
+        //runner is now our node to be deleted
+        prev.next = runner.next;
     }
 
     addToFront(node){
@@ -21,39 +115,6 @@ class SLL {
             return false;
         }
         return true;
-    }
-
-    //iterate the linked list and print the value of every node
-    display(){
-        let runner=this.head;
-        while(runner != null)
-        {
-            console.log(runner.data);
-            runner=runner.next;
-        }
-
-    }
-
-    //if data is contained within the current list, remove it.
-    //consider edge cases of head node, last node, and middle nodes
-    delete(data) {
-        if(this.isEmpty())
-            return;
-        if(this.head.data==data){
-            this.head=this.head.next;
-            return;
-        }
-        let runnerfront=this.head.next;
-        let runnerback=this.head;
-        while(runnerfront !=null){
-            if(runnerfront.data==data){
-                runnerback.next = runnerfront.next;
-                return;
-            }
-            runnerfront = runnerfront.next;
-            runnerback=runnerback.next;
-        }
-
     }
 
     addToBack(node){
@@ -116,78 +177,38 @@ class SLL {
 
     // remove and return the first node from the list or null
     removeHead(){
-        if (this.head === null) return null;
-        var temp = this.head;
+        if(this.isEmpty()) return null;
+
+        var removed = this.head;
         this.head = this.head.next;
-        temp.next = null;
-        return temp;
+        removed.next = null;
+        return removed;
     }
 
     // remove head and return the value of that node or null
     removeHeadValue(){
-        if (!this.head) return null;
-        var temp = this.head;
+        if(this.isEmpty()) return null;
+
+        var removed = this.head;
         this.head = this.head.next;
-        temp.next = null;
-        return temp.data;
+        return removed.value;
     }
 
     // remove and return the last node from the list or null
     removeBack(){
-        if (this.head === null) return null;
-        if (this.head.next === null) {
-            var output = this.head;
-            this.head = null;
-            return output;
+        if(this.isEmpty()) return null;
+        if(this.head.next === null){
+            return this.removeHead();
         }
-        var temp = this.head;
-        //Keep traversing to the next node until there's no more nodes left
-        while (temp.next.next !== null){
-            //keep going until end of list
-            temp = temp.next;
-        }
-        var output = temp.next;
-        //Set the next pointer of the second to last node to null
-        temp.next = null;
-        return output;
-    }
-
-    // bonus challenge:
-    // return the average of all values in an integer SLL
-    average(){
-        if (this.head === null) return 0;
-        //Create a sum var
-        var sum = 0;
-        var count = 0;
-        var temp = this.head;
-        while (temp !== null){
-            sum += temp.data;
-            count += 1;
-            temp = temp.next; // traversing
-        }
-        return (sum / count)
-        //Get all values of linked list and add them to the sum
-        //Store a count of items
-
-        //return average
-
-    }
-    // get the value of the middle node if there is one
-    getMiddleData(){
-        if (this.head === null) return null;
-        var count = 0;
-        var temp = this.head;
-        while (temp !== null) {
-            count++;
-            temp = temp.next;
-        }
-        if (count % 2 === 1) {
-            temp = this.head;
-            var target = (count + 1) / 2;
-            while (temp !== null) {
-                count++;
-                if (count === target) return temp.data;
+        var current = this.head.next;
+        var prev = this.head;
+        while(current){
+            if(current.next === null){
+                prev.next = null;
+                return current;
             }
+            prev = current;
+            current = current.next;
         }
     }
 }
@@ -199,45 +220,14 @@ class Node {
     }
 }
 
+// var mySLL = new SLL();
 
-// make new SLL
-var mySLL = new SLL();
 
-// should return true because new SLL is empty
-console.log(mySLL.isEmpty());
+// mySLL.addToFront(new Node(7));
 
-// create and add new node to front
-var firstNode = new Node(7);
-mySLL.addToFront(firstNode);
-console.log(mySLL);
 
-// create and add more nodes to front
-var newFirstNode = new Node(8);
-mySLL.addToFront(newFirstNode);
-var anotherFirstNode = new Node(9);
-mySLL.addToFront(anotherFirstNode);
-console.log(mySLL);
+// var myNewNode = new Node(8);
+// mySLL.addToFront(myNewNode);
 
-// create and add node to back
-var newLastNode = new Node(1);
-mySLL.addToBack(newLastNode);
-console.log(mySLL);
-
-// check if SLL contains node with data value of 7; should return true
-var contains7 = mySLL.contains(7);
-console.log(contains7); // should be true
-
-//Check if the removeBack works
-console.log(mySLL.removeHeadValue());
-// console.log(mySLL.removeBack().data);
-console.log(mySLL);
-
-console.log(mySLL.average());
-
-var newSLL = new SLL();
-console.log(newSLL.average());
-
-//Check if display is working
-mySLL.display();
-mySLL.delete(1);
-mySLL.display();
+// var bool = mySLL.isEmpty();
+// console.log(bool);
