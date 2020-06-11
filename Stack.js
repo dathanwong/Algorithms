@@ -1,10 +1,3 @@
-// Stacks
-
-// A stack is a LIFO data structure
-// LAST IN, FIRST OUT
-
-// think of a stack of paper
-
 class Node {
     constructor(data) {
         this.data = data;
@@ -12,62 +5,73 @@ class Node {
     }
 }
 
-class arrStack {
-    constructor(items){
-        if(!items) items = [];
-        this.items = items;
-    }
-
-    push(item) {
-        this.items.push(item);
-    }
-
-    pop() {
-        return this.items.pop();
-    }
-
-    peek() {
-        return this.items[this.items.length - 1];
-    }
-
-    isEmpty() {
-        if (this.items.length === 0){
-            return true;
-        }
-        return false;
-    }
-
-    size() {
-        return this.items.length;
-    }
-
-    print() {
-        for(var item in this.items){
-            console.log(item);
-        }
-    }
-}
-
-class slStack {
+class Stack { // FILO
     constructor() {
         this.head = null;
     }
 
-    push(node){
-        node.next = this.head;
-        this.head = node;
+    // using only one extra stack for storage, check if this stack is sorted
+    // return the stack back to it's original order when you are done
+    // assume numerical inputs (integers)
+    isSorted(){
+        var stack2 = new Stack();
+        var sorted = true;
+
+        // ! bang operator
+        while(!this.isEmpty()){
+            var temp = this.pop();
+            if(stack2.isEmpty() || stack2.peek().data <= temp.data){
+                stack2.push(temp);
+            } else {
+                sorted = false;
+                stack2.push(temp);
+                break;
+            }
+        }
+        while (!stack2.isEmpty()){
+            this.push(stack2.pop());
+        }
+        return sorted;
     }
-    pop(){
-        var removedNode = this.head;
-        this.head = removedNode.next;
-        removedNode.next = null;
-        return removedNode;
-    } // return a node
-    // break the reference .next === null
-    peek(){
-        return this.head.data;
+
+    push(newNode) {
+        if (this.head === null) {
+            this.head = newNode;
+        } else {
+            newNode.next = this.head;
+            this.head = newNode;
+        }
     }
-    isEmpty(){
-        return this.head == null;
+
+    pop() {
+        if (this.head === null) {
+            return null;
+        }
+
+        const removed = this.head;
+        this.head = this.head.next;
+        removed.next = null;
+
+        return removed;
+    }
+
+    peek() {
+        return this.head ? this.head.data : null;
+    }
+
+    isEmpty() {
+        let isEmpty = this.head === null;
+        return isEmpty;
     }
 }
+
+
+
+// enqueue(node)
+// dequeue() / grab every third node and enqueue in nextQueue
+// checkFront()
+// isEmpty()
+
+// because .next is just a Queue, all previous
+// queue interfaces will already be accessible
+// through this.nextQueue.enqueue(node) etc etc

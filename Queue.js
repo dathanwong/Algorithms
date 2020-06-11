@@ -2,79 +2,132 @@ class Node {
     constructor(data) {
         this.data = data;
         this.next = null;
-        // enqueue and dequeue
     }
 }
 
-class Queue {
+class Queue { // FIFO
     constructor() {
         this.front = null;
-        this.back = null;
+        this.rear = null;
+        this.length = 0;
     }
 
-    //Get in the back of the line
-    enqueue(node){
-        if(this.back != null){
-            this.back.next = node;
-            this.back = node;
-            this.back.next = null;
-        }else{
-            this.front = node;
-            this.back = node;
-        }
-    }
-    //Remove somebody from the front of the line
-    dequeue(){
-        var node = this.front;
-        if(this.front!=null){
-            this.front= this.front.next;
-        }
-        node.next = null;
-        return node;
-    }
-    //return the data at the front
-    getFront() {
-        if(this.front != null) {
-            return this.front.data;
-        }
-        return null;
+    // reverse a queue using only one stack as additional storage
+    queueReverse(){
+        var stack = new Stack();
+
+        while(!this.isEmpty()){
+            stack.push(this.dequeue());
+        };
+
+        while(!stack.isEmpty()){
+            this.enqueue(stack.pop());
+        };
     }
 
-    isEmpty(){
-        if(this.front==null){
-            return true;
-        }else{
+    compareQueues(queue){
+        if(this.length !== queue.length){
             return false;
         }
+        var count = 0;
+        var isEqual = true;
+        let len = this.length;
+
+        while(count < len){
+            const dequeue1 = this.dequeue();
+            const dequeue2 = queue.dequeue();
+
+            if(dequeue1.data !== dequeue2.data){
+                isEqual = false;
+            }
+
+            this.enqueue(dequeue1);
+            queue.enqueue(dequeue2);
+            count++;
+        }
+
+        return isEqual;
     }
 
+    queueIsPalindrome(){
+        var isPalindrome = true;
+        var stack = new Stack();
+        var len = this.length;
+
+        for(var i = 0; i < len; i++){
+            var node = this.dequeue();
+            stack.push(node);
+            this.enqueue(node);
+        }
+
+        for(var i = 0; i < len; i++){
+            var dequeued = this.dequeue();
+            var popped = stack.pop();
+
+            if(popped.data !== dequeued.data){
+                isPalindrome = false;
+            }
+
+            this.enqueue(dequeued);
+        }
+        return isPalindrome;
+    }
+
+    enqueue(node){
+        if(this.rear === null){
+            this.rear = node;
+            this.front = node;
+            this.length++;
+        }else{
+            this.rear.next = node;
+            this.rear = node;
+            this.length++;
+        }
+    }
+    dequeue(){
+        if(this.front === null){
+            this.length--;
+            return null;
+        };
+        if(this.front === this.rear){
+            this.rear = null;
+        };
+        let node = this.front;
+        this.front = node.next;
+        node.next = null;
+        this.length--;
+        return node;
+    }
+    checkFront(){
+        return this.front ? this.front.data : null;
+    }
     isEmpty(){
-        return this.front == null;
+        return this.front === null;
     }
 }
 
 
-// using only public queue interfaces,
-// print all the values of the queue and return
-// the queue as it's original order
-function readQueue(queue){
-    var backNode = queue.back;
-    var temp=queue.dequeue();
-    while(temp != backNode){
-        console.log(temp.data);
-        queue.enqueue(temp);
-        temp = queue.dequeue();
+
+// Bonus: nextQueue
+
+// design a new queue class that holds two queues
+
+// every third dequeued node gets enqueued into the 'next' queue
+
+// think of a security queue where every third person is sent
+// to an additional security check.
+
+// the nextQueue should implement
+// .front
+// .rear
+// .length
+// .nextQueue, where .nextQueue is a regular Queue class
+
+class nextQueue {
+    constructor() {
+        this.front = null;
+        this.rear = null;
+        this.length = 0;
+        this.nextQueue = new Queue();
     }
-    console.log(temp.data);
 }
-
-var node = new Node(1);
-
-var q = new Queue();
-q.enqueue(new Node(1));
-q.enqueue(new Node(2));
-q.enqueue(new Node(3));
-
-console.log(q.getFront());
-
-readQueue(q);
