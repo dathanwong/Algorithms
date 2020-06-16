@@ -61,6 +61,61 @@ class DLList {
     }
 
 
+    // return true or false if val exists within the DLL
+    exists(val){
+        var runner = this.head;
+        while(runner != null){
+            if (runner.data == val){
+                return true;
+            }
+            runner= runner.next;
+        }
+        return false;
+    }
+
+    // remove and return node with data === val if it exists
+    // assume every val is unique or simply just remove and return
+    // the first match that you find.
+    removeVal(val){
+        var runner = this.head;
+        while(runner != null){
+            //If found value is the head
+            if(this.head.data == val){
+                var node = this.head;
+                this.head.next.prev = null;
+                this.head = runner.next;
+                return node;
+            }
+            else if(this.tail.data == val){
+                var node = this.tail
+                node.prev.next= null;
+                this.tail = this.tail.prev;
+                return node;
+            }
+            else if(runner.data == val){
+                runner.prev.next = runner.next;
+                runner.next.prev = runner.prev;
+                runner.next = null;
+                runner.prev = null;
+                return runner;
+            }
+            runner = runner.next;
+        }
+    }
+
+    // return true of false if the current DLL is a palindrome
+    checkPalindrome(){
+        var runnerHead =this.head;
+        var runnerTail = this.tail;
+        for(var i=0;i<this.length/2;i++){
+            if(runnerHead.data != runnerTail.data){
+                return false;
+            }
+            runnerHead=runnerHead.next;
+            runnerTail= runnerTail.prev;
+        }
+        return true;
+    }
 
     // == Challenge Question ==
 
