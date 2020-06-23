@@ -46,6 +46,77 @@ class BST {
         }
     };
 
+    // return true / false if the value exists within the given tree
+    // if no tree is given, start a this.root
+    find(val, node){
+        if(node == null){
+            return false;
+        }
+        if(node.val == val){
+            return true;
+        }
+        if(val > node.val){
+            return this.find(val, node.right);
+        }
+        if( val < node.val){
+            return this.find(val, node.left);
+        }
+    }
+
+    // remove and return the smallest node of a given tree
+    removeSmallest(tree){
+        // if tree becomes null, return null
+        if(tree === null){
+            return null;
+        }
+        if(tree.left == null){
+            var smallest = tree;
+            if(tree.right != null){
+                this.root = tree.right;
+            }else{
+                this.root = null;
+            }
+            smallest.left = null;
+            smallest.right = null;
+            return smallest;
+        }
+        //At second to smallest
+        if(tree.left.left == null){
+            var smallest = tree.left;
+            tree.left = null;
+            smallest.left = null;
+            smallest.right = null;
+            return smallest;
+        }
+        return this.removeSmallest(tree.left);
+    }
+
+    // remove and return the largest node of a given tree
+    removeLargest(tree){
+        if(tree == null){
+            return null;
+        }
+        if(tree.right==null){
+            var biggest=tree;
+            if(tree.left !=null){
+                this.root=tree.left;
+            }else{
+                this.root=null;
+            }
+            biggest.left=null;
+            biggest.right=null;
+            return biggest;
+        }
+        if(tree.right.right==null){
+            var biggest=tree.right;
+            tree.right=null;
+            biggest.left=null;
+            biggest.right=null;
+            return biggest;
+        }
+        return this.removeLargest(tree.right);
+    }
+
     getLargestFromSubtree(node){
         if(node == null){
             return null;
