@@ -92,6 +92,86 @@ class BST {
         return this.removeSmallest(tree.left);
     }
 
+    delete(val, current = this.root){
+        if(this.root == null){
+            return;
+        }
+        if (this.root.val === val) {
+            var node = this.root;
+            if (this.root.left === null && this.root.right === null) {
+                this.root = null;
+            }
+            else if (this.root.left === null && this.root.right) {
+                this.root = this.root.right;
+            }
+            else if (this.root.left && this.root.right === null) {
+                this.root = this.root.left;
+            }
+            else {
+                var tempNode = this.getSmallestFromSubtree(this.root.right);
+                var tempVal = this.root.val;
+                this.root.val= tempNode.val;
+                tempNode.val = tempVal;
+                this.removeSmallest(this.root.right);
+            }
+            return node;
+        }
+        while(current != null){
+            if (current.left && current.left.val === val) {
+                var node = current.left;
+                //If left has no children
+                if(current.left.left == null && current.left.right == null){
+                    current.left = null;
+                }
+                //If left has one child
+                else if(current.left.left == null && current.left.right !== null) {
+                    current.left = current.left.right;
+                }
+                else if(current.left.left !== null && current.left.right === null) {
+                    current.left = current.left.left;
+                }
+                //if left has two children
+                else if(current.left.left && current.left.right){
+                    var tempNode = this.getSmallestFromSubtree(current.left.right);
+                    var tempVal = current.left.val;
+                    current.left.val= tempNode.val;
+                    tempNode.val = tempVal;
+                    this.removeSmallest(current.left.right);
+                }
+                return node;
+            }
+            if(current.right && current.right.val == val){
+                var node = current.right;
+                //Check if right has children
+                if(current.right.left == null && current.right.right == null){
+                    current.right = null;
+                }
+                else if(current.right.left === null && current.right.right !== null) {
+                    current.right =current.right.right;
+                }
+                else if (current.right.left !== null && current.right.right === null) {
+                    current.right = current.right.left;
+                }
+                //if right has two children
+                else if(current.right.left && current.right.right){
+                    var tempNode = this.getSmallestFromSubtree(current.right.right);
+                    var tempVal = current.right.val;
+                    current.right.val= tempNode.val;
+                    tempNode.val = tempVal;
+                    this.removeSmallest(current.right.right);
+                }
+                return node;
+            }
+            if (current.val > val) {
+                current = current.left;
+            }
+            else if (current.val < val) {
+                current = current.right;
+            }
+        }
+
+    }
+
     // remove and return the largest node of a given tree
     removeLargest(tree){
         if(tree == null){
