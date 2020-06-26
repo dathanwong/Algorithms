@@ -26,6 +26,27 @@ class BST {
         return this.root === null;
     };
 
+    height(current){
+        if(current == null){
+            return 0;
+        }else{
+            return Math.max(this.height(current.left), this.height(current.right))+1;
+        }
+      }
+    
+      size(current){
+        if(current === undefined){
+            current = this.root;
+        }
+        if(current == null){
+            return 0;
+        }
+        if(current){
+            // read everything, then recurse
+            return 1 + this.size(current.left) + this.size(current.right);
+        }
+    }
+
     insert(node, tree){
         if(this.root == null){
             this.root = node;
