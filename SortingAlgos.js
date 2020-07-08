@@ -40,7 +40,7 @@ function bubbleSort(arr) {
    */
   
   function selectionSort(arr) {
-    for(var i = 0; i < arr.length; i++){
+    for(var i = 0; i < arr.length-1; i++){
       var min = arr[i];
       var index = i;
       for(var j = i+1; j < arr.length; j++){
@@ -58,3 +58,78 @@ function bubbleSort(arr) {
   
   console.log(selectionSort([1, 5, 2, 8, 3, 4]));
   // should log [1, 2, 3, 4, 5, 8]
+
+  /**
+ * takes in an array
+ * returns THE SAME array sorted
+ * iterate through each element starting with the second
+ * work backwards to "insert" the element
+ * in the correct position
+ * elements get duplicated forward to make way for the
+ * inserted element
+ */
+
+function insertionSort(arr) {
+  let length = arr.length;
+  for (let i = 1; i < length; i++){
+      let key = arr[i];
+      let j = i - 1;
+      while (j >= 0 && arr[j] > key){
+          arr[j + 1] = arr[j];
+          j = j -1;
+      }
+      arr[j + 1] = key;
+  }
+  return arr;
+};
+
+console.log(insertionSort([1, 5, 2, 8, 3, 4]));
+// should log [1, 2, 3, 4, 5, 8]
+
+/**
+ * takes in an array of objects
+ * returns THE SAME array sorted
+ * choose any sorting algo we've done so far
+ * sort the elements by firstName AND THEN lastName
+ */
+
+function multiKeySort(arr) {
+  let length = arr.length;
+  for (let i = 1; i < length; i++){
+      let key = arr[i];
+      let j = i - 1;
+      while (j >= 0 && (arr[j].firstName > key.firstName || arr[j].firstName == key.firstName)){
+          if(arr[j].firstName == key.firstName){
+            if(arr[j].lastName > key.lastName){
+              arr[j + 1] = arr[j];
+              j = j -1;
+            }else{
+              break;
+            }
+          }else{
+            arr[j + 1] = arr[j];
+            j = j -1;
+          }
+          
+      }
+      arr[j + 1] = key;
+  }
+  return arr;
+}
+
+console.log(multiKeySort([
+  {
+    firstName: 'Lee',
+    lastName: 'Babba'
+  },
+  {
+    firstName: 'Lee',
+    lastName: 'Abba'
+  },
+  {
+    firstName: 'Adam',
+    lastName: 'Smith'
+  }
+]));
+
+// should log [{ firstName: 'Adam', lastName: 'Smith' }, { firstName: 'Lee', lastName: 'Abba' }, { firstName: 'Lee', lastName: 'Babba' }]
