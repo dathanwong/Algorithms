@@ -133,3 +133,62 @@ console.log(multiKeySort([
 ]));
 
 // should log [{ firstName: 'Adam', lastName: 'Smith' }, { firstName: 'Lee', lastName: 'Abba' }, { firstName: 'Lee', lastName: 'Babba' }]
+
+/**
+ * takes in two SORTED arrays
+ * returns a new sorted array with the combined elements
+ */
+
+function combineSortedArrays(arr1, arr2) {
+    let index1 = 0;
+    let index2 = 0;
+    let output = [];
+    while(arr1[index1] || arr2[index2]){
+        if(arr1[index1] == null){
+          output.push(arr2[index2]);
+          index2++;
+        }else if(arr2[index2] == null){
+            output.push(arr1[index1]);
+            index1++;
+        }else{
+            if(arr1[index1] <= arr2[index2]){
+              output.push(arr1[index1]);
+              index1++;
+            }else{
+                output.push(arr2[index2]);
+                index2++;
+            }
+        }
+    }
+    return output;
+  }
+  
+  console.log(combineSortedArrays([2, 4, 6], [1, 3, 5]));
+  // should log [1, 2, 3, 4, 5, 6]
+  console.log(combineSortedArrays([1], [3])); // should log [1, 3]
+  console.log(combineSortedArrays([1], [])); // should log [1]
+  
+  
+  /**
+   * takes in an UNSORTED array
+   * divide and conquer approach
+   * returns a sorted array
+   * function is recursive
+   * it uses combineSortedArrays internally
+   */
+  
+  function mergeSort(arr) {
+    if(arr.length <2){
+        return arr;
+    }
+    let mid = Math.floor(arr.length/2);
+    let firsthalf = mergeSort(arr.slice(0, mid));
+    let secondhalf = mergeSort(arr.slice(mid, arr.length));
+    return combineSortedArrays(firsthalf, secondhalf);
+  }
+  
+  [1, 2, 3, 4, 5].slice(2); // returns [3, 4, 5]
+  [1, 2, 3, 4, 5].slice(2, 4); // returns [3, 4]
+  
+  console.log(mergeSort([1, 5, 2, 8, 3, 4]));
+  // should log [1, 2, 3, 4, 5, 8]
