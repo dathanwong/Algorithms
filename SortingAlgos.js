@@ -193,47 +193,51 @@ function combineSortedArrays(arr1, arr2) {
   console.log(mergeSort([1, 5, 2, 8, 3, 4]));
   // should log [1, 2, 3, 4, 5, 8]
 
-  /**
- * takes in an array, a start index, and an end index
- * picks a random pivot index around which values will be partitioned
- * returns an integer: the new "pivot" index
- * the array should be mutated by the function
- */
+  function arrayPartition(arr, startIdx = 0, endIdx = arr.length - 1) {
 
-function arrayPartition(arr, startIdx = 0, endIdx = arr.length - 1) {
-    let pivot = Math.floor(Math.random()*(endIndex - startIndex + 1) );
-    let pivotValue = arr[pivot];
-    while (startIdx != endIdx) {
-      while(arr[startIdx] < pivotValue) {
+    let pivotIdx = Math.floor(Math.random() * (endIdx - startIdx) +startIdx);
+    let pivot = arr[pivotIdx];
+    while (startIdx < endIdx) {
+      while (arr[startIdx] < pivot) {
         startIdx++;
       }
-      while(arr[endIdx] > pivotValue ) {
+      while (arr[endIdx] > pivot) {
         endIdx--;
       }
-      // if(pivot == endIdx) {
-      //   pivot = startIdx;
-      // }
-      // else if(pivot == startIdx) {
-      //   pivot = endIdx;
+      if (startIdx < endIdx) {
+        let temp = arr[startIdx];
+        arr[startIdx] = arr[endIdx];
+        arr[endIdx] = temp;
       }
-      let temp = arr[startIdx];
-      arr[startIdx] = arr[endIdx];
-      arr[endIdx] = temp;
-      return startIdx; // or end index
+    }
+    return startIdx;
   }
-    
-    
-    // Math.random() returns a number from 0 up to but excluding 1
-    // Math.floor(5.614) returns 5
-    
-    const arr = [1, 2, 5, 4, 8, 6]
-    console.log(arrayPartition(arr)); // should log an index between 0 and 5
-    console.log(arr); // should be mutated and partitioned around the returned index
-    
-    // all values should be partitioned around the returned pivot index
-    // for example, if your function chooses a pivot of 3,
-    // the returned pivot should be 2 (the new pivot index)
-    // the array might now be [1, 2, 4, 8, 5, 6]
-    // 4 has all smaller values to its left and all greater values to its right
-  //   *************************************************************************************************
+  
+  // Math.random() returns a number from 0 up to but excluding 1
+  // Math.floor(5.614) returns 5
+  
+  /**
+   * takes in an UNSORTED array
+   * returns the SAME array sorted
+   * working in place, use yesterday's arrayPartition internally
+   * and call the function recursively as needed
+   */
+  
+  function quickSort(arr, startIdx = 0, endIdx = arr.length - 1) {
+    if (endIdx - startIdx < 1) {
+      return arr;
+    }
+    let pivotIdx = arrayPartition(arr, startIdx, endIdx);
+    quickSort(arr, startIdx, pivotIdx - 1);
+    quickSort(arr, pivotIdx + 1, endIdx);
+    return arr;
+  }
+  
+  console.log(quickSort([1, 5, 2, 8, 3, 4]));
+  
+  // should log [1, 2, 3, 4, 5, 8]
+  
+  // check to see if portion of the array we're sorting has at least 2 elements
+  // if it does, arrayPartition against that portion
+  // quickSort the left and the right portions surrounding the new pivot index
   
