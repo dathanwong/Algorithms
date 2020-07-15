@@ -241,3 +241,141 @@ function combineSortedArrays(arr1, arr2) {
   // if it does, arrayPartition against that portion
   // quickSort the left and the right portions surrounding the new pivot index
   
+  /**
+ * takes in two SORTED arrays
+ * returns a new SORTED array
+ * with the elements shared by both
+ * BONUS: dedupe
+ */
+
+function intersectSortedArrays(arr1, arr2) {
+    let intersect=[];//arr to store intersected values
+    let i=0;//counter for arr1
+    let j=0;//counter for arr2
+  
+    while(i<arr1.length&&j<arr2.length)
+    {
+      if(arr1[i]<arr2[j])//if arr1 value <arr2 value increment arr1 counter
+        i++;
+      else if(arr1[i]>arr2[j]) // if arr1 value > arr2 increment arr2 counter
+        j++;
+      else // if both values are equal or intersect add to intersect array and increment both counters
+        {
+          intersect.push(arr1[i]);
+          i++;
+          j++;
+        }
+  
+    }
+    return intersect;
+  
+  }
+  
+  console.log(intersectSortedArrays([1, 1, 1, 3], [1, 1, 4]));
+  // should log [2, 2]
+  
+  
+  function intersectSortedArraysDedupe(arr1, arr2) {
+      let dupe={};
+      let intersect=[];//arr to store intersected values
+      let i=0;//counter for arr1
+      let j=0;//counter for arr2
+    
+      while(i<arr1.length&&j<arr2.length)
+      {
+        if(arr1[i]<arr2[j])//if arr1 value <arr2 value increment arr1 counter
+          i++;
+        else if(arr1[i]>arr2[j]) // if arr1 value > arr2 increment arr2 counter
+          j++;
+        else // if both values are equal or intersect add to intersect array and increment both counters
+          {
+            if(!dupe[arr1[i]]){
+            intersect.push(arr1[i]);
+            dupe[arr1[i]]=true;
+            }
+            i++;
+            j++;
+          }
+    
+      }
+      return intersect;
+    
+    
+  }
+  
+  console.log(intersectSortedArraysDedupe([1, 2, 2, 3], [2, 2, 4]));
+  // should log [2]
+
+  /**
+ * takes in two arrays
+ * returns a NEW array
+ * with elements that ONLY APPEAR in one array
+ * elements in the input arrays NEED NOT BE SORTED
+ * the ordering of your output array NEED NOT BE SORTED
+ * BONUS: allow it to take in a 2D array
+ */
+
+// AKA symmetric difference
+
+function disjunctiveUnion(arr1, arr2) {
+    var newarray = [];
+    var freqTable = {};
+    for(var i=0; i<arr1.length;i++){
+      if(freqTable.hasOwnProperty(arr1[i])){
+        freqTable[arr1[i]] +=1
+      }
+      else{
+        freqTable[arr1[i]] = 1
+      }
+      console.log(freqTable);
+    }
+    for(var i=0; i<arr2.length;i++){
+        if(freqTable.hasOwnProperty(arr2[i])){
+          freqTable[arr2[i]] +=1
+        }
+        else{
+          freqTable[arr2[i]] = 1
+        }
+        console.log(freqTable);
+      }
+    for(var property in freqTable) {
+      if(freqTable[property] == 1){
+          newarray.push(property);
+      }
+    }
+    return newarray
+  }
+  
+  console.log(disjunctiveUnion([1, 2], [2, 1]));
+  // should log [] since 1 and 2 are in both
+  console.log(disjunctiveUnion([1, 2, 3], [1, 2]));
+  // should log [3]
+  
+  
+  function disjunctiveUnionBonus(arr) {
+    var newarray = [];
+    var freqTable = {};
+    for(var i=0;i<arr.length;i++){
+        for(var j=0;j<arr[i].length;j++){
+          if(freqTable.hasOwnProperty(arr[i][j])){
+            freqTable[arr[i][j]] +=1
+          }
+          else{
+            freqTable[arr[i][j]] = 1
+          }
+        }
+      }
+      for(var property in freqTable) {
+        if(freqTable[property] == 1){
+            newarray.push(property);
+        }
+      }
+      return newarray
+  }
+  
+  console.log(disjunctiveUnionBonus([
+    [1, 2, 3],
+    [4, 5, 6],
+    [1, 2, 5, 6]
+  ]));
+  // should log [3, 4] or [4, 3]
