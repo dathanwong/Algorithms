@@ -440,4 +440,69 @@ function allNonConsecutive(arr) {
   //   [3, 6, 7]
   // ]
 
+
+  /**
+ * takes in an array of integers
+ * returns an array of TWO INDICES
+ * the indices should point to the two elements
+ * that add up to the given sum
+ * assume that there is only one solution
+ * numbers can only be used once
+ */
+
+function sumTwo(arr, sum) {
+    let dict = {};
+    let output = [];
+    for(let i=0; i<arr.length; i++){
+      if(sum-arr[i] in dict){
+        output.push(i);
+        output.push(dict[sum-arr[i]]);
+        return output;
+      }
+      dict[arr[i]] = i;
+    }
+    return output;
+  }
+  
+  console.log(sumTwo([2, 7, 11, 15], 9)); // should log [0, 1]
+  
+  
+  /**
+   * takes in an array of integers
+   * and an integer
+   * returns an array of the "k" most frequent values
+   * the input array WON'T NECESSARILY BE IN ORDER
+   * the output array NEED NOT BE ORDERED
+   * you can assume there's always a valid answer
+   */
+  
+  function kMostFrequent(arr, k) {
+    let freqDict = {};
+    let output = [];
+    for(let i=0; i<arr.length; i++){
+      !(arr[i] in freqDict) ? freqDict[arr[i]] = 1 : freqDict[arr[i]]++;
+    }
+    while(output.length < k){
+      let maxKey = 0;
+      let maxVal = 0;
+      for(let key in freqDict){
+        if(freqDict[key]>maxVal){
+          maxVal = freqDict[key];
+          maxKey = key;
+        }
+      }
+      output.push(+maxKey);
+      freqDict[maxKey] = 0;
+    }
+    return output;
+  }
+  
+  console.log(kMostFrequent([1, 1, 1, 2, 2, 3], 2));
+  // should log [1, 2] or [2, 1]
+  
+  console.log(kMostFrequent([0, 0, 0, 2, 2, 3], 1));
+  // should log [0]
+  
+  console.log(kMostFrequent([1, 3, 2, 2, 1, 3], 3));
+  // should log [1, 2, 3] in any order
   
