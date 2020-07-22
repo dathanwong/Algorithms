@@ -506,3 +506,137 @@ function sumTwo(arr, sum) {
   console.log(kMostFrequent([1, 3, 2, 2, 1, 3], 3));
   // should log [1, 2, 3] in any order
   
+
+  /**
+ * takes an object with the ingredients/quanties
+ * as the key/value pairs
+ * and an object with the available ingredients/quantities
+ * as the key/value pairs
+ * returns the maximum quantity of the dish that can be prepared
+ */
+
+function getMaxServings(recipe, available) {
+    // your code here
+    let min = Infinity;
+    for(let key in recipe){
+        let temp = available.hasOwnProperty(key) ? available[key]/recipe[key] : 0;
+        if(temp < min) min = temp;
+    }
+    return min;
+  }
+  
+  const recipe = {
+    'organic fat': 99,
+    'live squid': 1,
+    'birds nest': 1,
+    'fried flesh': 1,
+    spicy: 5,
+    'gourmet memes': 4200
+  };
+  
+  const available = {
+    'organic fat': 990,
+    'live squid': 0,
+    'birds nest': 10,
+    'fried flesh': 10,
+    spicy: 50,
+    'gourmet memes': 42000,
+    sugar: 9001,
+    spice: 5,
+    'everything nice': 1
+  };
+  
+  console.log(getMaxServings(recipe, available)); // should log 0
+  
+  available['live squid'] = 10;
+  
+  console.log(getMaxServings(recipe, available)); // should log 10
+  
+  
+  /**
+   * takes in an array of ailment objects with a nested array of treatable symptoms
+   * and an array of medication objects
+   * return the medication(s) that treat the greatest number of the ailments
+   */
+  
+  function getMeds(ailments, medications) {
+    // your code here
+    let output = [];
+    let ails = {};
+    let max = 0;
+    for(let i = 0; i <ailments.length; i++){
+        ails[ailments[i]] = 1;
+    }
+    for(let j = 0; j < medications.length; j++){
+        let count = 0;
+        for(let i = 0; i <medications[j].treatableSymptoms.length; i++){
+            if(ails.hasOwnProperty(medications[j].treatableSymptoms[i])) count++;
+        }
+        if(count > max){
+          output = [medications[j].name];
+          max = count;
+        }else if(count == max && max != 0){
+            output.push(medications[j].name);
+        }
+        console.log("temp:" + output);
+    }
+    return output;
+  }
+  
+  const medications = [
+    {
+      name: 'Sulforaphane',
+      treatableSymptoms: [
+        'dementia',
+        `alzheimer's`,
+        'cancer',
+        'inflammation',
+        'neuropathy',
+      ],
+    },
+    {
+      name: 'Longvida Curcumin',
+      treatableSymptoms: [
+        'pain',
+        'inflammation',
+        'depression',
+        'arthritis',
+        'anxiety',
+      ],
+    },
+    {
+      name: 'Hericium erinaceus',
+      treatableSymptoms: ['anxiety', 'cognitive decline', 'depression'],
+    },
+    {
+      name: 'Nicotinamide mononucleotide',
+      treatableSymptoms: [
+        'ageing',
+        'low NAD',
+        'obesity',
+        'mitochondrial myopathy',
+        'diabetes',
+      ],
+    },
+    {
+      name: 'PainAssassinator',
+      treatableSymptoms: [
+        'pain',
+        'inflammation',
+        'cramps',
+        'headache',
+        'toothache',
+        'back pain',
+        'fever',
+      ],
+    },
+  ];
+  
+  console.log(getMeds(['pain'], medications));
+  // should log ['PainAssassinator', 'Longvida Curcumin']
+  
+  console.log(getMeds(['pain', 'inflammation', 'depression'], medications));
+  // should log ['Longvida Curcumin']
+  
+  console.log(getMeds(['existential dread'], medications));
+  // should log []
