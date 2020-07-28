@@ -705,3 +705,99 @@ function dropIt(arr, callback) {
     
     console.log(couldBePalindrome('Yuuyuu'));
     // should log false
+
+    /**
+ * @param {string} str
+ * @return {boolean}
+ * Are there 2 digits separated by exactly 3 question marks that sum to 10?
+ */
+
+function questionMarks(str) {
+    // your code here
+    let q = 0;
+    let num1 = -1;
+    let num2 = -1;
+    for(let i = 0; i<str.length; i++){
+        if(!isNaN(str[i])){
+            if(num1 >= 0){
+                num2 = parseInt(str[i]);
+                //Do logic to check if it adds up to 10
+                if(q == 3 && (num1+num2) == 10){
+                    return true;
+                }
+                //logic if we see two numbers but they don't add up to 10 or not 3 question marks
+                num1 = num2;
+                num2 = -1;
+                q = 0;
+            }else{
+                num1 = parseInt(str[i]);
+            }
+        }else{
+            if(str[i] === '?' && num1 >0){
+                q++;
+            }
+        }
+    }
+    return false;
+  }
+  
+  parseInt('s') // returns NaN
+  parseInt('5') // returns 5
+  isNaN(NaN) // returns true
+  isNaN(parseInt('9')) // returns false
+  
+  console.log(questionMarks('aa6?9')); // should log false
+  console.log(questionMarks('acc?7??sss?3rr1??????5')); // should log true
+  console.log(questionMarks('?3?d?dad?7??????3')); // should log true
+  console.log(questionMarks('7??????3')); // should log false
+  
+  
+//   /**
+//    * @param {string} str1
+//    * @param {string} str2
+//    * consisting of lowercase characters and backspaces (#)
+//    * @return {boolean} whether the two strings are equivalent after taking the backspaces into consideration
+//    * BONUS: solve in O(n)
+//    */
+  
+  function backspaceStringCompare(str1, str2) {
+    // your code here
+    let backspaces = 0;
+    let temp1 = "";
+    let temp2 = "";
+    for(let i = str1.length-1; i >= 0; i--){
+        if(str1[i] !== '#'){
+            if(backspaces > 0){
+                backspaces--;
+            }else{
+                temp1 = str1[i]+temp1;
+            }
+        }else{
+            backspaces++;
+        }
+    }
+    backspaces = 0;
+    for(let i = str2.length-1; i >= 0; i--){
+        if(str2[i] !== '#'){
+            if(backspaces > 0){
+                backspaces--;
+            }else{
+                temp2 =str2[i]+temp2;
+            }
+        }else{
+            backspaces++;
+        }
+    }
+    console.log(temp1);
+    console.log(temp2);
+    return temp1===temp2;
+  }
+  
+  console.log(backspaceStringCompare('ab#c', 'ad#c'));
+  // should log true - they both become 'ac'
+  
+  console.log(backspaceStringCompare('ab##', 'c#d#'));
+  // should log true - they both become ''
+  
+  console.log(backspaceStringCompare('a##c', '#a#c'));
+  // should log true - they both become 'c'
